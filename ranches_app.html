@@ -442,7 +442,10 @@
     .rank-badge { width: 24px; height: 24px; font-size: 0.78rem; }
 
     /* OOM table — allow scroll, freeze player col */
-    #table-standings { min-width: 700px; }
+    #table-standings { min-width: 600px; font-size: 0.78rem; }
+    #table-standings td, #table-standings th { padding: 8px 6px; }
+    #table-standings th { font-size: 0.6rem; letter-spacing: 0.8px; }
+    #table-standings td:nth-child(2) { min-width: 80px; }
 
     /* Week dropdown */
     .week-dropdown-wrap { margin-bottom: 1.2rem; }
@@ -737,7 +740,7 @@
     </div>
     <div class="week-dropdown-wrap">
       <select class="week-dropdown" id="week-dropdown" onchange="selectWeekFromDropdown(this.value)">
-        <option value="">Loading weeks...</option>
+        <option value="">Select a week...</option>
       </select>
     </div>
     <div class="table-wrap">
@@ -904,11 +907,11 @@ function parseWeeklyData(rows) {
       // Skip col header row
       if (i < rows.length && (rows[i][0] === 'RANK' || rows[i][1] === 'PLAYER')) i++;
       const players = [];
-      while (i < rows.length && !(rows[i][0] || '').toString().startsWith('WEEK')) {
+      while (i < rows.length && !(rows[i][0] || '').toString().toUpperCase().startsWith('WEEK')) {
         const row = rows[i];
         const name = row[1];
         const adjScore = parseFloat(row[4]);
-        if (name && name.trim() && adjScore >= 4) {
+        if (name && name.trim() && !isNaN(adjScore) && adjScore >= 4) {
           players.push({
             rank: row[0] || '',
             name: row[1] || '',
@@ -919,9 +922,8 @@ function parseWeeklyData(rows) {
         }
         i++;
       }
-      if (players.length > 0) {
-        weeks.push({ weekNum, label, players });
-      }
+      // Include week even if no players yet (show empty table)
+      weeks.push({ weekNum, label, players });
     } else {
       i++;
     }
