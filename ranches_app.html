@@ -422,6 +422,154 @@
     .nav-tab { padding: 6px 10px; font-size: 0.78rem; }
     .content { padding: 1.2rem 1rem; }
   }
+
+  /* ══════════════════════════════════════════════
+     MOBILE RESPONSIVE
+  ══════════════════════════════════════════════ */
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav {
+      height: auto;
+      padding: 10px 14px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav-logo {
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      flex: 1;
+    }
+
+    .nav-tabs {
+      width: 100%;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .nav-tab {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-divider { display: none; }
+
+    .season-select {
+      font-size: 0.8rem;
+      padding: 5px 10px;
+      flex-shrink: 0;
+    }
+
+    /* HERO */
+    .hero { min-height: auto; }
+
+    .hero-content {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1.2rem 1rem 1rem;
+      gap: 1rem;
+    }
+
+    .hero-logo svg {
+      width: 60px;
+      height: 87px;
+    }
+
+    .hero-logo {
+      display: none;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem 1.5rem;
+      width: 100%;
+    }
+
+    .hero-stat-val {
+      font-size: 1.6rem;
+    }
+
+    .hero-stat-label {
+      font-size: 0.65rem;
+    }
+
+    .hero-season {
+      font-size: 0.65rem;
+      margin-top: 0.5rem;
+      letter-spacing: 1.5px;
+    }
+
+    /* CONTENT */
+    .content { padding: 1rem 0.75rem; }
+
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title { font-size: 1.2rem; }
+
+    /* WEEK SELECTOR */
+    .week-selector {
+      gap: 6px;
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .week-btn {
+      flex-shrink: 0;
+      padding: 5px 11px;
+      font-size: 0.82rem;
+    }
+
+    /* TABLES — hide less important cols on mobile */
+    .table-wrap { border-radius: 10px; }
+
+    table { font-size: 0.88rem; }
+
+    thead th { padding: 10px 8px; font-size: 0.65rem; letter-spacing: 1px; }
+    td { padding: 10px 8px; font-size: 0.88rem; }
+
+    /* OOM TABLE — hide 8th-5th on mobile, keep rank/player/4th/3rd/2nd/1st/total */
+    .oom-col-8th,
+    .oom-col-7th,
+    .oom-col-6th,
+    .oom-col-5th,
+    .oom-col-rounds,
+    .oom-col-avg { display: none; }
+
+    /* WEEKLY TABLE — keep all cols, just tighten */
+    .weekly-col-adj { display: none; }
+
+    /* RESULTS GRID */
+    .grid-wrap { border-radius: 10px; }
+    .grid-table td:first-child { min-width: 100px; font-size: 0.82rem; }
+    .grid-table th, .grid-table td { min-width: 38px; font-size: 0.8rem; }
+
+    /* Rank badge smaller */
+    .rank-badge { width: 26px; height: 26px; font-size: 0.8rem; }
+
+    /* Player name wrapping fix */
+    td:nth-child(2) { min-width: 80px; }
+  }
+
+  @media (max-width: 400px) {
+    .nav-logo { font-size: 0.75rem; }
+    .hero-stat-val { font-size: 1.4rem; }
+    td { padding: 8px 6px; font-size: 0.82rem; }
+    thead th { padding: 8px 6px; }
+  }
+
 </style>
 </head>
 <body>
@@ -537,11 +685,14 @@
           <tr>
             <th>Rank</th>
             <th>Player</th>
-            <th>8th</th><th>7th</th><th>6th</th><th>5th</th>
+            <th class="oom-col-8th">8th</th>
+            <th class="oom-col-7th">7th</th>
+            <th class="oom-col-6th">6th</th>
+            <th class="oom-col-5th">5th</th>
             <th>4th</th><th>3rd</th><th>2nd</th><th>1st</th>
             <th>OOM Total</th>
-            <th>Rounds</th>
-            <th>Avg</th>
+            <th class="oom-col-rounds">Rounds</th>
+            <th class="oom-col-avg">Avg</th>
           </tr>
         </thead>
         <tbody id="tbody-standings"></tbody>
@@ -567,7 +718,7 @@
             <th>Rank</th>
             <th>Player</th>
             <th>Score</th>
-            <th>Adjustment</th>
+            <th class="weekly-col-adj">Adjustment</th>
             <th>Adj Score</th>
           </tr>
         </thead>
@@ -672,8 +823,8 @@ async function loadStandings() {
           <td>${row[1] || ''}</td>
           ${scoreCells}
           <td>${row[10] || '—'}</td>
-          <td>${row[11] !== undefined && row[11] !== '' ? row[11] : '—'}</td>
-          <td>${row[12] !== undefined && row[12] !== '' ? row[12] : '—'}</td>
+          <td class="oom-col-rounds">${row[11] !== undefined && row[11] !== '' ? row[11] : '—'}</td>
+          <td class="oom-col-avg">${row[12] !== undefined && row[12] !== '' ? row[12] : '—'}</td>
         </tr>`;
     });
 
