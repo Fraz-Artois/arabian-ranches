@@ -434,21 +434,9 @@
     .content { padding: 1rem 0.6rem; }
     .section-header { flex-direction: column; align-items: flex-start; gap: 6px; }
 
-    /* Tables — make them scrollable horizontally */
-    .table-wrap { border-radius: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    table { font-size: 0.85rem; min-width: 500px; }
-    thead th { padding: 10px 10px; font-size: 0.65rem; letter-spacing: 1px; }
-    td { padding: 9px 10px; font-size: 0.88rem; }
-    .rank-badge { width: 24px; height: 24px; font-size: 0.78rem; }
-
-    /* OOM table — allow scroll, freeze player col */
-    #table-standings { min-width: 480px; font-size: 0.82rem; }
-    #table-standings td, #table-standings th { padding: 7px 5px; }
-    #table-standings th { font-size: 0.58rem; letter-spacing: 0.5px; }
-    #table-standings td:nth-child(2) { min-width: 70px; font-size: 0.82rem; }
-    #table-standings .rank-badge { width: 22px; height: 22px; font-size: 0.72rem; }
-    #table-weekly { min-width: 0; width: 100%; font-size: 0.9rem; }
-    #table-weekly td, #table-weekly th { padding: 8px 8px; }
+    /* Tables on mobile */
+    #table-standings td:nth-child(2) { min-width: 65px; }
+    .rank-badge { width: 22px; height: 22px; font-size: 0.72rem; }
 
     /* Week dropdown */
     .week-dropdown-wrap { margin-bottom: 1.2rem; }
@@ -925,8 +913,10 @@ function parseWeeklyData(rows) {
         }
         i++;
       }
-      // Include week even if no players yet (show empty table)
-      weeks.push({ weekNum, label, players });
+      // Only include weeks that have actual results
+      if (players.length > 0) {
+        weeks.push({ weekNum, label, players });
+      }
     } else {
       i++;
     }
